@@ -3,14 +3,16 @@
     pos: Vector2;
     direction: number;
     line: boolean;
-    pathD: string;
+    pathD: string[];
+    colors: string[];
 
     constructor(pos?: Vector2)
     {
         this.pos = pos || { x: 0, y: 0 };
-        this.direction = 90;
+        this.direction = 1/4;
         this.line = false;
-        this.pathD = Line.vector2ToString("M", this.pos);
+        this.pathD = [Line.vector2ToString("M", this.pos)];
+        this.colors = ["black"];
     }
 
     static vector2ToString(start: string, pos: Vector2)
@@ -23,6 +25,12 @@
         this.lineTo({ x: (Math.sin(this.directionInRadians) * steps) + this.pos.x, y: this.pos.y - (Math.cos(this.directionInRadians) * steps) });
     }
 
+    changeColor(color: string)
+    {
+        this.colors.push(color);
+        this.pathD.push(Line.vector2ToString("M", this.pos));
+    }
+
     turn(direction: number)
     {
         this.direction += direction;
@@ -31,7 +39,7 @@
     lineTo(pos: Vector2)
     {
         this.pos = pos;
-        this.pathD += Line.vector2ToString(this.line ? " L" : " M", pos);
+        this.pathD[this.pathD.length - 1] += Line.vector2ToString(this.line ? " L" : " M", pos);
     }
 
     moveTo(pos: Vector2)
@@ -54,37 +62,32 @@
 
     get directionInRadians()
     {
-        return this.direction * (Math.PI / 180);
+        return this.direction * (Math.PI * 2);
     }
 
     set directionInRadians(radians: number)
     {
-        this.direction = radians * (180 / Math.PI);
+        this.direction = (radians * 2) / Math.PI;
     }
 
-    get SVGPath()
+    get SVGPaths()
+    {
+        var result: SVGPathElement[] = [];
+        for (var index = 0; index < this.pathD.length; index++)
+        {
+            result.push(this.SVGPath(index));
+        }
+        return result;
+    }
+
+    SVGPath (index: number)
     {
         var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttributeNS(null, 'd', this.pathD);
-        path.setAttributeNS(null, 'stroke', 'black');
+        path.setAttributeNS(null, 'd', this.pathD[index]);
+        path.setAttributeNS(null, 'stroke', this.colors[index]);
         path.setAttributeNS(null, 'fill', 'transparent');
         return path;
     }
 }
 
 type Vector2 = { x: number; y: number; }
-window.onload = function () {
-    var line = new Line();
-    line.turn(45);
-    line.move(100);
-    line.penDown();
-    for (var n = 0; n < 3; n++)
-    {
-        line.move(100);
-        line.turn(120);
-    }
-    var path = line.SVGPath;
-    canvas.appendChild(path);
-};
-
-declare var canvas: SVGElement;

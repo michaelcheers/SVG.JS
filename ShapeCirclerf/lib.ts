@@ -3,6 +3,7 @@
     pos: Vector2;
     direction: number;
     line: boolean;
+    index: number;
     pathD: string[];
     colors: string[];
 
@@ -13,6 +14,7 @@
         this.line = false;
         this.pathD = [Line.vector2ToString("M", this.pos)];
         this.colors = ["black"];
+        this.index = 0;
     }
 
     static vector2ToString(start: string, pos: Vector2)
@@ -22,13 +24,20 @@
 
     move(steps: number)
     {
-        this.lineTo({ x: (Math.sin(this.directionInRadians) * steps) + this.pos.x, y: this.pos.y - (Math.cos(this.directionInRadians) * steps) });
+        this.drawLineTo({ x: (Math.sin(this.directionInRadians) * steps) + this.pos.x, y: this.pos.y - (Math.cos(this.directionInRadians) * steps) });
     }
 
     changeColor(color: string)
     {
-        this.colors.push(color);
-        this.pathD.push(Line.vector2ToString("M", this.pos));
+        var index: number = this.colors.indexOf(color);
+        if (index === -1) {
+            this.pathD.push("");
+            this.index = this.pathD.length - 1;
+            this.colors.push(color);
+        }
+        else
+            this.index = index;
+        this.pathD[this.index] += (Line.vector2ToString("M", this.pos));
     }
 
     turn(direction: number)
@@ -36,18 +45,71 @@
         this.direction += direction;
     }
 
-    lineTo(pos: Vector2)
+    drawLineTo(pos: Vector2)
     {
         this.pos = pos;
-        this.pathD[this.pathD.length - 1] += Line.vector2ToString(this.line ? " L" : " M", pos);
+        this.pathD[this.index] += Line.vector2ToString(this.line ? " L" : " M", pos);
     }
 
     moveTo(pos: Vector2)
     {
-        var oldLine = this.line;
         this.penUp();
-        this.lineTo(pos);
-        this.line = oldLine;
+        this.drawLineTo(pos);
+        this.penDown();
+    }
+
+    drawRegularPolygon(length: number, nSides: number)
+    {
+        for (var n = 0; n < nSides; n++)
+        {
+            this.move(length);
+            this.turn(1 / nSides);
+        }
+    }
+
+    drawPolygon(lengths: number[], nSides: number)
+    {
+        for (var n = 0; n < nSides; n++)
+        {
+            this.move(lengths[n % lengths.length]);
+            this.turn(1 / nSides);
+        }
+    }
+
+    drawCircle(circumference: number, quality: number)
+    {
+        circumference *= Math.PI;
+        for (var n = 0; n < quality; n++)
+        {
+            this.move(circumference / quality);
+            this.turn(1 / quality);
+        }
+    }
+
+    drawRectangle(size: Vector2)
+    {
+        for (var n = 0; n < 2; n++)
+        {
+            this.move(size.x);
+            this.turn(0.25);
+            this.move(size.y);
+            this.turn(0.25);
+        }
+    }
+
+    drawSquare(width: number)
+    {
+        this.drawRectangle({ x: width, y: width });
+    }
+
+    drawTriangle(width: number, length?: number, angle?: number)
+    {
+        var startPos = { x: this.pos.x, y: this.pos.y };
+        this.move(width);
+        this.turn(angle || (1 / 3));
+        this.move(length || width);
+        this.drawLineTo(startPos);
+        this.direction = 0;
     }
 
     penDown()
@@ -87,6 +149,13 @@
         path.setAttributeNS(null, 'stroke', this.colors[index]);
         path.setAttributeNS(null, 'fill', 'transparent');
         return path;
+    }
+
+    render(canvas: SVGElement)
+    {
+        this.SVGPaths.forEach(function (v) {
+            canvas.appendChild(v);
+        });
     }
 }
 

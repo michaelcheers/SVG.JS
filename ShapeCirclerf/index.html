@@ -8,10 +8,14 @@
     <script src="app.js"></script>
     <script src="lib.js"></script>
 </head>
-<body onload="go(36, 36)">
+<body onload="go(36, 36); addColor(0);">
     <h1>TypeScript HTML App</h1>
-
-    <div id="content">Inner: &nbsp;<input type="number" oninput="go(inner.value, outer.value)" id="inner" step="1" pattern="[0-9]" /><br />Outer:&nbsp;<input pattern="[0-9]" step="1" type="number" id="outer" oninput="go(inner.value, outer.value)" /></div>
+    Colors:
+    <div style="border:1px solid black;width:5%;">
+        <span id="colors"></span><br /><br />
+        <button onclick="addColor();submit()">Add Color</button>
+    </div>
+    <div id="content">Inner: &nbsp;<input type="number" oninput="submit()" id="inner" step="1"/><br />Outer:&nbsp;<input step="1" type="number" id="outer" oninput="submit()" /></div>
     <svg id="canvas" width="500" height="500" xmlns='http://www.w3.org/2000/svg'></svg>
 </body>
 </html>

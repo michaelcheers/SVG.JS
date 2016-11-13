@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVG.JS", "SVG.JS\SVG.JS.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeCircler", "ShapeCirclerf\ShapeCircler.csproj", "{2E271EA4-B351-42A0-941B-5B7BC60CAFB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spiral", "Spiral\Spiral.csproj", "{8D975924-5AD9-45FD-82E1-619DC8C01329}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2E271EA4-B351-42A0-941B-5B7BC60CAFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E271EA4-B351-42A0-941B-5B7BC60CAFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E271EA4-B351-42A0-941B-5B7BC60CAFB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D975924-5AD9-45FD-82E1-619DC8C01329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D975924-5AD9-45FD-82E1-619DC8C01329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D975924-5AD9-45FD-82E1-619DC8C01329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D975924-5AD9-45FD-82E1-619DC8C01329}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

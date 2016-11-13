@@ -5,12 +5,11 @@
     <meta charset="utf-8" />
     <title>TypeScript HTML App</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
-    <script src="app.js"></script>
+    <script src="lib.js"></script>
+    <script src="tests.js"></script>
 </head>
-<body onload="go(36, 36)">
-    <h1>TypeScript HTML App</h1>
-
-    <div id="content">Inner: &nbsp;<input type="number" oninput="go(inner.value, outer.value)" id="inner" step="1" pattern="[0-9]" /><br />Outer:&nbsp;<input pattern="[0-9]" step="1" type="number" id="outer" oninput="go(inner.value, outer.value)" /></div>
-    <svg id="canvas" width="500" height="500" xmlns='http://www.w3.org/2000/svg'></svg>
+<body>
+    <h1>SVG.JS Tests</h1>
+    <svg id="canvas" width="500" height="500"></svg>
 </body>
 </html>

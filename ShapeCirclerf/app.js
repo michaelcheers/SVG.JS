@@ -36,4 +36,10 @@ function addColor() {
     color.oninput = submit;
     colors.appendChild(color);
 }
+function download() {
+    var link = document.createElement('a');
+    link.href = "data:application/octet-stream," + encodeURIComponent("<svg width=\"500\" height=\"500\" xmlns='http://www.w3.org/2000/svg'>" + canvas.innerHTML + "</svg>");
+    link.download = 'canvas.svg';
+    link.click();
+}
 //# sourceMappingURL=app.js.map
